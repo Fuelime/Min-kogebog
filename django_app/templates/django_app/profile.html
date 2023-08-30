@@ -1,0 +1,40 @@
+{%extends "main.html"%}
+
+{%block content%}
+
+<style>
+   .logout i {
+        margin-right: 6px;
+    }
+</style>
+{%if request.user == user%}
+<h1>Din profil</h1>
+{%else%}
+<h1>{{user.username}}</h1>
+{%endif%}
+<hr>
+<div>
+    <h3>Statistikker</h3>
+    <!-- {%for recipe in recipes%}
+    <div>
+        <a href="{%url 'recipe' recipe.id%}">{{recipe.name}}</a>
+    </div>
+    {%endfor%} -->
+    {%if request.user == user%}
+    <p>Du har lavet <b>{{recipes.count}} </b> opskrifter</p>
+    <p>Du har liket <b>{{likes.count}}</b> opskrifter</p>
+    <p>Du har modtaget <b>{{likes_recieved}}</b> Likes</p>
+    <p>Din profil blev oprettet d. <b>{{user.date_joined}}</b></p>
+    {%else%}
+    <p>{{user.username}} har lavet <b>{{recipes.count}} </b> opskrifter</p>
+    <p>{{user.username}} har liket <b>{{likes.count}}</b> opskrifter</p>
+    <p>{{user.username}} har modtaget <b>{{likes_recieved}}</b> Likes</p>
+    <p>{{user.username}} blev oprettet d. <b>{{user.date_joined}}</b></p>
+    {%endif%}
+</div>
+{%if request.user == user%}
+<div class="logout">
+    <a href="{%url 'logout'%}" class="btn btn-danger btn-block"><i class="fa-solid fa-right-from-bracket fa-rotate-180"></i> Log ud</a>
+</div>
+{%endif%}
+{%endblock content%}

@@ -1,0 +1,48 @@
+{%extends "main.html"%}
+{%load static%}
+{%block content%}
+<link rel="stylesheet" type="text/css" media="screen" href="/static/styles/search.css?{%now 'U'%}">
+
+{%if recipe_count > 0%}
+<div class="recipes">
+    {%if q%}
+    <h5 class="recipe-search">{{recipe_count}} opskrift{{recipe_count|pluralize:"er"}} fundet ved søgningen: {{q}}</h5>
+    {%else%} 
+    <h5 class="recipe-search">Alle opskrifter ({{recipe_count}})</h5>
+    {%endif%}
+    <br>
+
+    
+    {% for recipe in recipes%}
+    <div class="recipe">
+        {%if recipe.image.url is not None%}
+       <a href="{% url 'recipe' recipe.id %}" class="image-link"><img src="{{recipe.image.url}}" alt="" ></a>
+       {%else%}
+       <a href="{% url 'recipe' recipe.id %}" class="image-link"><img src="/static/images/ImageNotAvailable_BW.png" alt="" ></a>
+        {%endif%}
+        <div class="recipe-info">
+            <a href="{% url 'recipe' recipe.id %}" id="name" class="mb-2">{{recipe.name}}</a>
+            <br class="br">
+            <small>{{recipe.description}}</small>
+            <br>
+            <small>{{recipe.likes.count}} like{{recipe.likes.count|pluralize}}</small>
+            <br>
+            <span class="user">Af:
+            {%if recipe.host is not None%} <a href="{%url 'profile' recipe.host%}" class="username">{{recipe.host.username}}</a> {%else%} [deleted]{%endif%},     {{recipe.created|timesince}} siden   {%if recipe.edited == True%}(redigeret){%endif%}</span>
+            <!-- <small>{{recipe.topic.name}}</small> -->
+        </div>
+        {%if request.user == recipe.host%}
+        <a href="{%url 'edit-recipe' recipe.id%}" class="host-action edit"><i class="bi bi-pencil-fill"></i></a>
+        <a href="{%url 'delete-recipe' recipe.id%}" class="host-action delete"><i class="bi bi-trash3-fill"></i></a>
+    {%endif%}
+    </div>
+    {%endfor%}
+</div>
+{%else%}
+<div>
+    <h4 class="recipe-search">Der blev ikke fundet nogen opskrifter :/</h4>
+    <br>
+    <p>vil du fylde dette tomrum ved at <a href="create-recipe">lave din egen opskrift</a>?</p>
+</div>
+{%endif%}
+{%endblock content%}

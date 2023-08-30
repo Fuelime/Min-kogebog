@@ -1,0 +1,9 @@
+
+{%extends "main.html"%}
+{%block content%}
+{%if user.is_authenticated%}
+<p>Hej med dig, {{user.username}}</p>
+{%else%}
+<p>Velkommen til, fremmede</p>
+{%endif%}
+{%endblock content%}

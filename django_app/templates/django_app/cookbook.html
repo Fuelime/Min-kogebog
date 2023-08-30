@@ -1,0 +1,40 @@
+{%extends "main.html"%}
+
+{%block content%}
+    <style>
+        .recipes {
+            width: 100%;
+            height: 250px;
+            background-color: #e6e6e6;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .recipe-name {
+            text-decoration: none;
+            color: #535353;
+            font-size: 1.5rem;
+        }
+
+        .image-link img{
+            object-fit: cover;
+            width: 230px;
+            height: 230px;
+            border-radius: 15px;
+        }
+    </style>
+    <h1>Din kogebog</h1>
+    {%for item in items%}
+    <div class="recipes">
+        {%if item.recipe.image.url is not None%}
+        <a href="{% url 'recipe' item.recipe.id %}" class="image-link"><img src="{{item.recipe.image.url}}" alt="" ></a>
+        {%else%}
+        <a href="{% url 'recipe' item.recipe.id %}" class="image-link"><img src="/static/images/ImageNotAvailable_BW.png" alt="" ></a>
+         {%endif%}
+        <a href="{%url 'recipe' item.recipe.id%}" class="recipe-name">{{item.recipe}}</a>
+    </div>
+    {%endfor%}
+{%endblock content%}

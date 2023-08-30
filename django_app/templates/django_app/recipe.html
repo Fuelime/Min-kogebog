@@ -1,0 +1,82 @@
+
+{%extends "main.html"%}
+{%load static%}
+<link rel="stylesheet" href="/static/styles/recipe.css?{%now 'U'%}">
+{%block content%}
+<style>
+    #like {
+        background-color: transparent;
+        border: none;
+    }
+
+    #like i {
+        color: black;
+        font-size: 1.8em;
+        transition: 200ms;
+    }
+
+    #like i:hover {
+        color: #0D6EFD;
+    }
+</style>
+<div class="recipe">
+    <a href="{{request.META.HTTP_REFERER}}">Gå tilbage</a>
+    <h1>{{recipe.name}}</h1>
+    <small>Af: {{recipe.host}}, {{recipe.created|timesince}} siden</small>
+    <br>
+    <small>{{likes_count}} Likes</small>
+    {%if user.is_authenticated or recipe.host != request.user%}
+    <form action="" method="post">
+        {%csrf_token%}
+        <!-- <input type="submit" name="like" id="" value="Like" class=""> -->
+        <button type="submit" name="like" id="like">
+            {%if user_like %}
+            <i class="fa-solid fa-thumbs-up text-primary"></i>
+            {%else%}
+            <i class="fa-regular fa-thumbs-up"></i>
+            {%endif%}
+        </button>
+    </form>
+
+    <form action="" method="post">
+        {%csrf_token%}
+        {%if user_item%}
+        <button type="submit" class="btn btn-danger" name="add_item"><i class="fa-solid fa-book"></i> Fjern</button>
+        {%else%}
+        <button type="submit" class="btn btn-success" name="add_item"><i class="fa-solid fa-book"></i> Tilføj</button>
+        {%endif%}
+    </form>
+    {%endif%}
+    <p>{{recipe.description}}</p>
+    <br>
+    <ul>
+    {%for ingredient in ingredients%}
+        <li>{{ingredient.ingredient}}</li>
+    {%endfor%}
+    </ul>
+</div>
+
+<div class="comments">
+    <p>Kommentarer</p>
+    <hr>
+    {%for message in recipe_messages%}
+    <div>
+        <small>{{message.user}},     {{message.created|timesince}} siden</small>
+        {%if request.user == message.user%}
+        <a href="#">Slet</a>
+        {%endif%}
+        <p>{{message.body}}</p>
+        <hr>
+    </div>
+    {%endfor%}
+
+    {%if user.is_authenticated%}
+    <div class="comment-form">
+        <form action="" method="POST" name="message">
+            {%csrf_token%}
+            <input type="text" name="message" placeholder="Del dine tanker...">
+        </form>
+    </div>
+    {%endif%}
+</div>
+{%endblock content%}

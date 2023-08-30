@@ -1,0 +1,109 @@
+.recipe-search{
+    display: block;
+    font-weight: bold;
+}
+
+.recipes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.recipe {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    width: min(100%, 900px);
+    max-height: 200px;
+    background-color: rgb(222, 222, 222);
+    border-radius: 12px;
+    box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.069);
+    padding: 12px;
+    margin: 15px 0px;
+}
+
+
+.recipe-info {
+    margin-left: 18px;
+}
+
+.recipe:hover .host-action {
+    opacity: 1;
+}
+
+.recipe img {
+    width: 200px;
+    height: 133px;
+    border-radius: 7px;
+    box-shadow: 0 0 0 0 #0000001d;
+    transition: all 200ms ease;
+}
+
+.recipe img:hover {
+    box-shadow: 0 0 12px 1px #0000001d;;
+}
+
+.recipe .image-link {
+    width: min-content;
+}
+
+
+#name {
+    font-family: 'M PLUS Rounded 1c';
+    font-size: 1.3rem;
+    color: #535353;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 200ms ease;
+}
+
+#name:hover {
+    color: #385286;
+}
+
+
+.host-action {
+    position: absolute;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    background-color: transparent;
+    color: gray;
+    transition: all 200ms ease;
+}
+
+.host-action:hover {
+    background-color: rgba(128, 128, 128, 0.348);
+    color: black;
+}
+
+.edit {
+    right: 80px;
+}
+
+.delete {
+    right: 20px;
+}
+
+.username {
+    text-decoration: none;
+    font-weight: bold;
+    color: #535353;
+    transition: all 200ms ease;
+}
+
+.username:hover {
+    color: #385286;
+}
+
+.btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}

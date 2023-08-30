@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap');
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+@font-face {
+   font-family: "Traffolight";
+   src: local("Traffolight"),
+     url(/static/fonts/Traffolight.otf);
+ }
+ 
+
+body {
+   background-color: #d6d5d5
+}
+.container {
+   padding: 10px 1px;
+}
+
+#login, #register {
+   width: clamp(300px, 65%, 500px);
+   padding: 12px 12px;
+   border-radius: 8px;
+   background-color: rgb(242, 242, 242);
+   position: absolute;
+   display: flex;
+   /* align-items: center; */
+   justify-content: center;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   margin: auto;
+   box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.486);
+}
+
+#login {
+   height: 600px;
+}
+
+#register {
+   height: 670px;
+}
+
+#login-button, #register-button {
+   /* display: block; */
+   /* margin-inline: auto; */
+   margin: 10px 0;
+} 
+
+.form-form {
+ display: flex;
+ width: 100%;
+ flex-direction: column;
+ align-items: center;
+}
+
+label {
+   display: block;
+   font-size: 1.2em;
+   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+   margin-top: 20px;
+   margin-bottom: 5px;
+}
+
+.form-field {
+   display: flex;
+   width: 90%;
+   height: 45px;
+   background-color: #ffffff6a;
+   border-radius: 8px;
+   align-items: center;
+   box-shadow: 0 0 0 0 rgba(0, 183, 255, 0.403);
+   border: solid 2px rgb(214, 214, 214);
+   transition: 200ms;
+}
+
+.form {
+   width: 100%;
+   font-size: 1.3em;
+   background-color: transparent;
+   padding-left: 8px;
+   border: none;
+   outline: none;
+}
+
+.form-field:focus-within{
+   border: solid 2px rgb(72, 164, 221);
+   box-shadow: 0 0 2px 3px lightskyblue;
+}
+.form-field i {
+   padding-left: 8px;
+   font-size: 1.2em;
+   color: rgb(63, 63, 63);
+}
+
+p, a {
+   position: absolute;
+   bottom: 50px;
+   font-size: 1em;
+}
+
+h2, h5 {
+   clear: both;
+}
+
+h2 {
+   font-weight: bold;
+   font-size: 2.3rem;
+}
+
+.submit {
+   width: 80%;
+}
+
+/* .password {
+   font-family: sans-serif;
+} */
+
+.btn {
+   font-size: 1.2rem;
+}

@@ -1,0 +1,82 @@
+{%extends "main.html"%}
+{%load static%}
+{%block content%}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap');
+    .topics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    h2 {
+        display: flex;
+        justify-content: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .topic {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #c8c8c8;
+        width: 100%;
+        aspect-ratio: 1;
+        border: solid 1px rgba(0, 0, 0, 0.305);
+        box-shadow: 0 0 0px 0px #0000001b;
+        border-radius: 15px;
+        transition: all 300ms ease;
+    }
+
+    .topic:hover {
+        box-shadow: 0 0 12px 1px #0000001b;
+    }
+
+    .topic a {
+        display: flex;
+        position: relative;
+        text-decoration: none;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .topic a h4 {
+        color: #535353;
+        font-family: 'M PLUS Rounded 1c';
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 10px;
+        transition: all 200ms ease;
+    }
+
+    .topic a h4:hover {
+        color: #385286;
+    }
+
+    .topic img {
+        width: 100%;
+        height: 80%;
+        position: absolute;
+        bottom: 0px;
+        border-radius: 0 0 14px 14px;
+        border-top: solid 2px black;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+<h2>Alle overemner</h2>
+<a href="{%url 'search'%}?q=">Se alle opskrifter</a>
+<div class="topics">
+{%for topic in topics%}
+<div class="topic">
+    <a href="{%url 'search'%}?q={{topic.name}}"><h4>{{topic.name}}</h4>
+    {%if topic.image%}
+    <img src="{{topic.image.url}}" alt="">
+    {%endif%}
+</a>
+</div>
+{%endfor%}
+</div>
+{%endblock content%}

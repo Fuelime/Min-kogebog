@@ -1,0 +1,166 @@
+
+{%extends "main.html"%}
+{%load widget_tweaks%}
+{%block content%}
+<!-- <link rel="stylesheet" href="/static/styles/recipe.css?{%now 'U'%}"> -->
+
+    <style>
+        .required{
+            color: rgb(202, 1, 1);
+        }
+        
+    </style>
+
+     <script>
+        var loadFile = function(event) {
+	        var image = document.getElementById('output');
+	        image.src = URL.createObjectURL(event.target.files[0]);
+            var remove = document.getElementById("remove").innerHTML = "Fjern billede"
+        };  
+
+        var removeFile = function(event){
+            var image = document.getElementById('output');
+            image.src = null
+            var remove = document.getElementById("remove").innerHTML = ""
+            window.alert(document.getElementById("button").classList)
+            
+        };
+
+    </script> 
+
+
+
+
+
+    
+<script type='text/javascript'>
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+    function cloneMore(selector, prefix) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+            var nameAttr = $(this).attr('name');
+            if (nameAttr) {
+                var name = nameAttr.replace('-' + (total-1) + '-', '-' + total + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    }
+});
+
+
+        total++;
+        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+         $(selector).after(newElement);
+        if (newElement.find('.remove-form-row').length === 0) {
+            var removeButton = $('<button></button>')
+            .addClass('btn btn-danger remove-form-row')
+            .html('<i class="bi bi-x-lg"></i>');
+
+            // $(newElement).find(".ingredient").after(removeButton);
+            newElement.find(".ingredient-form .ingredient").after(removeButton);
+        }
+
+
+
+        return false;
+    }
+    function deleteForm(prefix, btn) {
+        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (total > 1){
+            btn.closest('.form-row').remove();
+            var forms = $('.form-row');
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            for (var i=0, formCount=forms.length; i<formCount; i++) {
+                $(forms.get(i)).find(':input').each(function() {
+                    updateElementIndex(this, prefix, i);
+                });
+            }
+        }
+        return false;
+    }
+    $(document).on('click', '.add-form-row', function(e){
+        e.preventDefault();
+        cloneMore('.form-row:last', 'form');
+        return false;
+    });
+    $(document).on('click', '.remove-form-row', function(e){
+        e.preventDefault();
+        deleteForm('form', $(this));
+        return false;
+    });
+
+    $(document).ready(function() {
+        var removeButton = $('<button></button>')
+            .addClass('btn btn-danger remove-form-row')
+            .html('<i class="fa-solid fa-x"></i>');
+        $(".ingredient").after(removeButton)
+        $('.formset-group .form-row:first .remove-form-row').remove();
+     });
+    </script>
+
+
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{formset.management_form}}
+        <div class="form-group">
+            <label for="recipe-image" class="btn btn-secondary">Upload billede</label>
+            <input type="file" name="image" id="recipe-image" accept="image/*" onchange="loadFile(event)" style="display: none;">
+            
+            <img id="output" src="{%if recipe.image.url is not None%} {{recipe.image.url}} {%endif%}" alt="" width="250">
+            <label for="" id="remove" onclick="removeFile(event)">{%if recipe.image.url is not None%}Fjern billede{%endif%}</label>
+        </div>
+        <div class="form-group">
+            <label for="recipe-topic">Overemne:</label>
+            <input type="text" name="topic" id="recipe-topic" value="{{recipe.topic.name}}" list="topic-list" required class="form-control">
+            <datalist id="topic-list">
+                <select name="" id="topic-list">
+                    {%for topic in topics%}
+                    <option value="{{topic.name}}"></option>
+                    {%endfor%}
+                </select>
+            </datalist> 
+            <label for="" class="required">*</label>
+        </div>
+
+        <div class="form-group">
+            <label for="recipe-name">Navn:</label>
+            <input type="text" name="name" id="recipe-name" value="{{recipe.name}}" class="form-control">
+            <label for="" class="required">*</label>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="recipe-description">Beskrivelse af retten:</label>
+            <textarea name="description" id="recipe-description" cols="30" rows="10" class="form-control">{{recipe.description}}</textarea>
+        </div>
+
+        <p>Ingredienser:</p> <br>
+        <div class="form-group formset-group">
+            {%for form in formset%}
+                {%for hidden in form.hidden_fields%}
+                    {{hidden}}
+                {%endfor%}
+            <div class="form-row">
+                <div class="col-9">
+                    <div class="ingredient-form my-3 d-flex float-left">
+                        {%render_field form.ingredient required="" class+="ingredient form-control col-5"%}
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+            <button type="button" class=" btn btn-success add-form-row" id="button"><i class="fa-solid fa-plus"></i> Ingrediens</button>
+        </div>
+        <a href="{{request.META.HTTP_REFERER}}">Annullér</a>
+        <!-- <input type="submit" name="" id="" value="Opret opskrift"> -->
+        <button type="submit" class="btn btn-primary">Opret opskrift</button>
+    </form>
+    <p class="required" id="red">* Påkrævet</p>
+
+{%endblock content%}
